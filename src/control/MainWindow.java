@@ -33,6 +33,7 @@ public class MainWindow implements Initializable, Runnable{
     private GraphicsContext gc;
     //Niveles
     private ArrayList<BaseLevels> levels;
+    private static int LEVELS=0;
 
     
   //Fotograma por segundos
@@ -58,8 +59,8 @@ public class MainWindow implements Initializable, Runnable{
 		
 		gc=canvas.getGraphicsContext2D();
 		canvas.setFocusTraversable(true);
-		ship=new Ship(canvas);
-		bullets = new ArrayList<Bullet>();
+		//ship=new Ship(canvas);
+		//bullets = new ArrayList<Bullet>();
 		start();
 		//Eventos teclas
 		initEvents();
@@ -74,42 +75,16 @@ public class MainWindow implements Initializable, Runnable{
 		}
 	}
 	public void paint() {
-		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		ship.paint();
-System.out.println(AVERAGEFPS);
-		 for(int i=0;i<bullets.size();i++) {
-			  bullets.get(i).paint();
-			  if(bullets.get(i).getX()>canvas.getWidth()) {
-				  bullets.remove(i);
-				  i--;
-			  }
-		  }
+		levels.get(LEVELS).paint();
 	}
 	
 	
 	public void initEvents() {
-		canvas.setOnKeyPressed(e->{
-			if(e.getCode().equals(KeyCode.LEFT)) {
-				ship.moveX(-10);
-			}
-			if(e.getCode().equals(KeyCode.RIGHT)) {
-				ship.moveX(10);
-			}
-			/*if(e.getCode().equals(KeyCode.W)) {
-				ship.moveY(-10);
-			}
-			if(e.getCode().equals(KeyCode.S)) {
-				ship.moveY(10);
-			}
-			*/
-			if(e.getCode().equals(KeyCode.SPACE)) {
-			bullets.add(new Bullet(canvas,ship.getX()+10,ship.getY()-20));
-			}
-			
-			
-		});
 		
+		canvas.setOnKeyPressed(e -> {
+			levels.get(LEVELS).onKey(e);
+		});
+	
 	}
 
 	
@@ -164,6 +139,7 @@ System.out.println(AVERAGEFPS);
 	//Para iniciar el hilo
 	private void start() {
 		mainThread = new Thread(this);
+		mainThread.start();
 		runningFlag=true;
 	}
 	

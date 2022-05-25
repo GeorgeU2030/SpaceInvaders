@@ -30,8 +30,13 @@ public class Ship {
 			e.printStackTrace();
 		}
 	}
-	public void moveX(int m) {
+	public void moveXRight(int m) {
 		this.x+=m;
+	}
+	
+	public void moveXLeft(int m) {
+		this.x-=m;
+		
 	}
 	public void moveY(int m) {
 	    this.y+=m;	

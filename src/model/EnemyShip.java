@@ -23,4 +23,6 @@ public abstract class EnemyShip {
 	
 	
 	public abstract void paint();
-}
+	}
+
+	

@@ -8,6 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application{
+	
+	public static final int WIDTH=600, HEIGHT=400;
+	
 
 	public static void main(String[] args) {
 		launch(args);
@@ -21,7 +24,12 @@ public class Main extends Application{
 		Scene scene = new Scene(parent);
 		Stage stage = new Stage();
 		stage.setScene(scene);
+		
+		stage.setTitle("GALAGA");
+		stage.setResizable(false);
 		stage.show();
+		
+		
 	}
 
 }

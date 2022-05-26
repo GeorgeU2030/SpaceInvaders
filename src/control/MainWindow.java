@@ -18,7 +18,7 @@ import levels.LevelTwo;
 import model.Bullet;
 import model.Ship;
 
-public class MainWindow implements Initializable, Runnable{
+public class MainWindow implements Initializable{
 
 	private Thread mainThread;
 	
@@ -35,13 +35,7 @@ public class MainWindow implements Initializable, Runnable{
     private ArrayList<BaseLevels> levels;
     private static int LEVELS=0;
 
-    
-  //Fotograma por segundos
-  	private final int FPS=60;
-  	private double TARGETTIME =1000000000/FPS; //Nanosegundos/Número de fotogramas
-  	private double delta=0; //Almacena temporalmente el tiempo que ha pasado.
-  	private int AVERAGEFPS=FPS; //Fotograma por segundos en promedio .
-  	
+    public static long FRAMES = 0;
   	
   	
 	
@@ -61,7 +55,15 @@ public class MainWindow implements Initializable, Runnable{
 		canvas.setFocusTraversable(true);
 		//ship=new Ship(canvas);
 		//bullets = new ArrayList<Bullet>();
-		start();
+		new Thread(() -> {
+			while (true) {
+				Platform.runLater(()->{
+					paint();
+				});
+				pause(50);
+				FRAMES++;
+			}
+		}).start();
 		//Eventos teclas
 		initEvents();
 	}
@@ -92,67 +94,9 @@ public class MainWindow implements Initializable, Runnable{
 		
 		
 	}
-	//Hilo
-	@Override
-	public void run() {
-		
-		long now =0;
-		//Obtiene la hora actual del sistema en nanosegundos para ser más precisos
-		long lastTime = System.nanoTime(); 
-		int frames = 0;
-		long time =0;
-		
-		
-		while(runningFlag) {
-			now = System.nanoTime();
-			//Cuando sea 1
-			delta+=(now-lastTime)/TARGETTIME;
-			time += (now-lastTime);
-			lastTime= now;
-			
-			if(delta>=1) {
-				Platform.runLater(()->{
-					paint();
-					
-				});
-				
-				delta--;
-				frames++;
-				
-				System.out.println(frames);
-			}
-			if(time>=1000000000) {
-				
-				AVERAGEFPS = frames;
-				System.out.println(frames);
-				frames = 0;
-				time = 0;
-				
-			}
-			
-		}
-		
-		
-		stop();
-	}
 	
-	//Para iniciar el hilo
-	private void start() {
-		mainThread = new Thread(this);
-		mainThread.start();
-		runningFlag=true;
-	}
 	
-	//Para apagar el hilo
-	private void stop() {
-		try {
-			mainThread.join();
-			runningFlag=false;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
     
     
 }

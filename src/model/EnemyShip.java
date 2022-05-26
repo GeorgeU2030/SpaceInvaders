@@ -18,11 +18,15 @@ public abstract class EnemyShip {
 
 	protected Canvas canvas;
 	protected GraphicsContext gc;
-	private int x=300;
-	private int y=350;
+
 	
 	
 	public abstract void paint();
-	}
+	public abstract void move();
+	
+}
+
+
+
 
 	

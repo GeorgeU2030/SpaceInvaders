@@ -1,5 +1,6 @@
 package control;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -46,15 +47,19 @@ public class MainWindow implements Initializable{
 		//Levels
 		 levels= new ArrayList<>();
 		
-		levels.add(new LevelOne(canvas));
+		try {
+			levels.add(new LevelOne(canvas));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		levels.add(new LevelTwo(canvas));
 		levels.add(new LevelThree(canvas));
 		
 		
 		gc=canvas.getGraphicsContext2D();
 		canvas.setFocusTraversable(true);
-		//ship=new Ship(canvas);
-		//bullets = new ArrayList<Bullet>();
+		
 		new Thread(() -> {
 			while (true) {
 				Platform.runLater(()->{

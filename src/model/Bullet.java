@@ -16,32 +16,30 @@ public class Bullet {
 	private GraphicsContext gc;
 	
 	private double x, y;
+	private Image textureBullet;
 
 	private int size;
 	private int speed;
 	
-	public Bullet(Canvas canvas,double x, double y) {
+	public Bullet(Canvas canvas,double x, double y, Image textureBullet) {
 		this.canvas=canvas;
 		this.gc = canvas.getGraphicsContext2D();
 		
-		this.x=x+10;
+		this.x=x+15;
 		this.y=y-20;
 		
-		this.size=10;
-		this.speed=3;
+		this.size=1;
+		this.speed=8;
+		this.textureBullet= textureBullet;
 	}
 	
 	
 
 	public void paint() {
-		File file =new File("src/image/bullet.png");
-		try {
-			Image image = new Image (new FileInputStream(file));
-			gc.drawImage(image, x, y,30,30);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		
+			gc.drawImage(textureBullet, x, y,10,30);
+		
 		
 		y-=speed;
 	}

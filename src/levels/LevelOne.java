@@ -82,35 +82,42 @@ public class LevelOne extends BaseLevels {
 
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).paint();
+			
+			
 			if (bullets.get(i).getY() > canvas.getHeight()) {
 				bullets.remove(i);
 				i--;
+				
 			}
 		}
 
+		collision();
 	}
+	
+	
 
 	public void collision() {
+		boolean flag=false;
 		// Calcular distancia
-		for (int i = 0; i < enemyShip1.size(); i++) {
-			for (int j = 0; j < bullets.size(); j++) {
+		for (int i = 0; i < bullets.size(); i++) {
+			for (int j = 0; j < enemyShip1.size(); j++) {
 
 				// Comparar
-				EnemyShip enemy = enemyShip1.get(i);
-				Bullet p = bullets.get(j);
+				EnemyShip enemy = enemyShip1.get(j);
+				Bullet p = bullets.get(i);
 				//Distance euclidea
 				double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
 
 				if (D <= 10) {
-					EnemyShip deletedEnemy = enemyShip1.remove(i);
+					EnemyShip deletedEnemy = enemyShip1.remove(j);
 					deletedEnemy.setAlive(false);
-					enemyShip1.remove(j);
-					
+					bullets.remove(i);
+				
 
 					return;
 				}
 
-				System.out.println("Distancia:" + D);
+				System.out.println("Distancia: "+"  enemigo #"+j+" bala # "+i+ "  "+ D);
 			}
 		}
 	}
@@ -119,7 +126,19 @@ public class LevelOne extends BaseLevels {
 		// Enemigos version 1
 		for (int i = 0; i < enemyShip1.size(); i++) {
 			enemyShip1.get(i).paint();
+			
+			if(enemyShip1.get(i).getX()>canvas.getWidth()) {
+				enemyShip1.get(i).setX(0);
+			}
+			if(enemyShip1.get(i).getX()<0) {
+				enemyShip1.get(i).setX(canvas.getWidth());
+			}
+			if(enemyShip1.get(i).getY()>canvas.getHeight()) {
+				enemyShip1.get(i).setY(0);
+			}
+			
 		}
+		
 
 	}
 

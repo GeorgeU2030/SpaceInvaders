@@ -34,8 +34,8 @@ public class EnemyShip extends Thread{
 	@Override
 	public void run() {
 		while(isAlive) {
-			int randX = (int)(7*Math.random()) -3;
-			int randY = (int)(7*Math.random()) -3 ;
+			int randX = (int)(7*Math.random()) +3;
+			int randY = (int)(7*Math.random()) +4 ;
 			x+=randX;
 			y+=randY;
 			try {
@@ -48,9 +48,6 @@ public class EnemyShip extends Thread{
 		
 		
 	}
-	
-
-	
 
 	public void paint() {
 		

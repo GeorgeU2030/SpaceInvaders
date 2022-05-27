@@ -25,10 +25,10 @@ public class Bullet {
 		this.canvas=canvas;
 		this.gc = canvas.getGraphicsContext2D();
 		
-		this.x=x+15;
+		this.x=x+20;
 		this.y=y-20;
 		
-		this.size=1;
+		this.size=0;
 		this.speed=8;
 		this.textureBullet= textureBullet;
 	}

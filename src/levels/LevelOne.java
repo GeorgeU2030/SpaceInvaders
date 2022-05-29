@@ -3,6 +3,7 @@ package levels;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -18,6 +19,7 @@ import model.Ship;
 
 public class LevelOne extends BaseLevels {
 	// Objetos sobre el escenario
+	private final static int NUM_ENEMY=10;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<EnemyShip> enemyShip1;
 	
@@ -38,31 +40,31 @@ public class LevelOne extends BaseLevels {
 
 	
 	public void initializingEnemyes() throws FileNotFoundException {
-		File file =new File("src/image/enemyBlue2.png");
-		
-			Image textureEnemy = new Image (new FileInputStream(file));
+		int colorRan=(int) (Math.random()*4+1);
+		int contx=200;
+		int conty=1000;;
+		int i=1;
+		try {
+			for(int j=0; j<NUM_ENEMY;j++) {
+				if(j==5) {
+					i=1;
+					//conty=700;
+					conty-=100;
+					contx=200;
+				}
+				File file= new File("image/enemy"+i+".png");
+				i++;
+				Image textureEnemy = new Image(new FileInputStream(file));
+				contx+=100;
+				//conty-=100;
+				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty,textureEnemy);
+				enemyShip1.add(enemy);
+				enemy.start();
+			}
 			
-		EnemyShip enemy1 = new EnemyShip(canvas, 500, canvas.getHeight() - 600,textureEnemy);
-		EnemyShip enemy2 = new EnemyShip(canvas, 400, canvas.getHeight() - 600,textureEnemy);
-		EnemyShip enemy3 = new EnemyShip(canvas, 300, canvas.getHeight() - 600,textureEnemy);
-		EnemyShip enemy4 = new EnemyShip(canvas, 600, canvas.getHeight() - 600,textureEnemy);
-		EnemyShip enemy5 = new EnemyShip(canvas, 700, canvas.getHeight() - 600,textureEnemy);
-		EnemyShip enemy6 = new EnemyShip(canvas, 800, canvas.getHeight() - 600,textureEnemy);
-
-		enemyShip1.add(enemy1);
-		enemyShip1.add(enemy2);
-		enemyShip1.add(enemy3);
-		enemyShip1.add(enemy4);
-		enemyShip1.add(enemy5);
-		enemyShip1.add(enemy6);
-
-		enemy1.start();
-		enemy2.start();
-		enemy3.start();
-		enemy4.start();
-		enemy5.start();
-		enemy6.start();
-
+		}catch(IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
@@ -152,7 +154,7 @@ public class LevelOne extends BaseLevels {
 			ship.moveXRight(15);
 		}
 		if (e.getCode().equals(KeyCode.SPACE)) {
-			File fileBullet =new File("src/image/laserRed07.png");
+			File fileBullet =new File("image/laserRed07.png");
 			Image textureBullet = null;
 			try {
 				textureBullet = new Image (new FileInputStream(fileBullet));

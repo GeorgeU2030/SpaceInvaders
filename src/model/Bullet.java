@@ -36,11 +36,7 @@ public class Bullet {
 	
 
 	public void paint() {
-		
-		
-			gc.drawImage(textureBullet, x, y,10,30);
-		
-		
+			gc.drawImage(textureBullet, x, y,10,40);
 		y-=speed;
 	}
 	

@@ -24,7 +24,7 @@ public class Ship {
 	}
 
 	public void paint() {
-		File file = new File("src/image/playerShip3_red.png");
+		File file = new File("image/playerShip3_red.png");
 		try {
 			Image image = new Image(new FileInputStream(file));
 			gc.drawImage(image, x, y, 50, 50);

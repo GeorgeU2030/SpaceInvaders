@@ -34,12 +34,12 @@ public class EnemyShip extends Thread{
 	@Override
 	public void run() {
 		while(isAlive) {
-			int randX = (int)(7*Math.random()) +3;
-			int randY = (int)(7*Math.random()) +4 ;
+			int randX = 0;
+			int randY = 8 ;
 			x+=randX;
 			y+=randY;
 			try {
-				Thread.sleep(50);
+				Thread.sleep(150);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

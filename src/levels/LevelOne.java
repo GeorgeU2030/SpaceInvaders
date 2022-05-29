@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +22,10 @@ public class LevelOne extends BaseLevels {
 	// Objetos sobre el escenario
 	private final static int NUM_ENEMY=10;
 	private ArrayList<Bullet> bullets;
+	//private ArrayList<Bullet> enemyBullets;
 	private ArrayList<EnemyShip> enemyShip1;
+	private ArrayList<Image> exploImages;
+	private int frameExplo=0;
 	
 	private Ship ship;
 
@@ -32,7 +36,9 @@ public class LevelOne extends BaseLevels {
 
 		// Balas
 		bullets = new ArrayList<Bullet>();
+		//enemyBullets = new ArrayList<Bullet>();
 		enemyShip1 = new ArrayList<EnemyShip>();
+		exploImages=new ArrayList<>();
 		
 		initializingEnemyes();
 
@@ -40,7 +46,6 @@ public class LevelOne extends BaseLevels {
 
 	
 	public void initializingEnemyes() throws FileNotFoundException {
-		int colorRan=(int) (Math.random()*4+1);
 		int contx=200;
 		int conty=1000;;
 		int i=1;
@@ -59,12 +64,15 @@ public class LevelOne extends BaseLevels {
 				//conty-=100;
 				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty,textureEnemy);
 				enemyShip1.add(enemy);
+				//shotsAgainst(enemy);
 				enemy.start();
 			}
 			
 		}catch(IOException ex) {
 			ex.printStackTrace();
 		}
+		
+		
 	}
 
 	@Override
@@ -84,12 +92,9 @@ public class LevelOne extends BaseLevels {
 
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).paint();
-			
-			
 			if (bullets.get(i).getY() > canvas.getHeight()) {
 				bullets.remove(i);
 				i--;
-				
 			}
 		}
 
@@ -110,12 +115,12 @@ public class LevelOne extends BaseLevels {
 				//Distance euclidea
 				double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
 
-				if (D <= 10) {
+				if (D <= 40) {
 					EnemyShip deletedEnemy = enemyShip1.remove(j);
 					deletedEnemy.setAlive(false);
 					bullets.remove(i);
-				
-
+					explosion(deletedEnemy);
+					frameExplo=0;
 					return;
 				}
 
@@ -123,6 +128,21 @@ public class LevelOne extends BaseLevels {
 			}
 		}
 	}
+	
+	public void explosion(EnemyShip deletedEnemy ){
+		try {
+			for(int i=1; i<=14;i++) {
+				File file= new File("image/Explosion/explosion - copia ("+i+").png");
+				Image image = new Image(new FileInputStream(file));
+				exploImages.add(image);
+			}
+		}catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		gc.drawImage(exploImages.get(frameExplo), deletedEnemy.getX(),  deletedEnemy.getY(),50,80);
+		frameExplo++;
+	}
+		
 
 	public void paintEnemyesOneAndTwo() {
 		// Enemigos version 1
@@ -143,7 +163,9 @@ public class LevelOne extends BaseLevels {
 		
 
 	}
-
+	
+	
+	
 	@Override
 	public void onKey(KeyEvent e) {
 
@@ -164,7 +186,6 @@ public class LevelOne extends BaseLevels {
 			}
 			bullets.add(new Bullet(canvas, ship.getX(), ship.getY(),textureBullet));
 		}
-
 	}
 
 }

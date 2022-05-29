@@ -1,5 +1,7 @@
 package levels;
 
+import java.io.IOException;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
@@ -15,7 +17,7 @@ public abstract class BaseLevels {
 		gc = canvas.getGraphicsContext2D();
 	}
 	
-	public abstract void paint();
+	public abstract void paint() throws IOException;
 	
 
 	public abstract void onKey(KeyEvent e);

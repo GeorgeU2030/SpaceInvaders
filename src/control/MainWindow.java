@@ -1,6 +1,7 @@
 package control;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import levels.BaseLevels;
+import levels.FinalScore;
 import levels.LevelOne;
 import levels.LevelThree;
 import levels.LevelTwo;
@@ -34,10 +36,9 @@ public class MainWindow implements Initializable{
     private GraphicsContext gc;
     //Niveles
     private ArrayList<BaseLevels> levels;
-    private static int LEVELS=0;
+    public static int LEVELS=0;
 
     public static long FRAMES = 0;
-  	
   	
 	
 	
@@ -55,7 +56,7 @@ public class MainWindow implements Initializable{
 		}
 		levels.add(new LevelTwo(canvas));
 		levels.add(new LevelThree(canvas));
-		
+		levels.add(new FinalScore(canvas));
 		
 		gc=canvas.getGraphicsContext2D();
 		canvas.setFocusTraversable(true);
@@ -82,12 +83,16 @@ public class MainWindow implements Initializable{
 		}
 	}
 	public void paint() {
-		levels.get(LEVELS).paint();
+		try {
+			levels.get(LEVELS).paint();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
 	public void initEvents() {
-		
 		canvas.setOnKeyPressed(e -> {
 			levels.get(LEVELS).onKey(e);
 		});

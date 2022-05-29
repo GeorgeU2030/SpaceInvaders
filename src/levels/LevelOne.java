@@ -1,19 +1,28 @@
 package levels;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import control.MainWindow;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.FillRule;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import main.Main;
 import model.Bullet;
 import model.EnemyShip;
 import model.Ship;
@@ -28,6 +37,7 @@ public class LevelOne extends BaseLevels {
 	private int frameExplo=0;
 	
 	private Ship ship;
+	private static int score;
 
 	public LevelOne(Canvas canvas) throws FileNotFoundException {
 		super(canvas);
@@ -39,12 +49,12 @@ public class LevelOne extends BaseLevels {
 		//enemyBullets = new ArrayList<Bullet>();
 		enemyShip1 = new ArrayList<EnemyShip>();
 		exploImages=new ArrayList<>();
-		
+		setScore(0);
+			
 		initializingEnemyes();
 
-	}
+	}	
 
-	
 	public void initializingEnemyes() throws FileNotFoundException {
 		int contx=200;
 		int conty=1000;;
@@ -76,9 +86,16 @@ public class LevelOne extends BaseLevels {
 	}
 
 	@Override
-	public void paint() {
+	public void paint() throws IOException {
+
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		gc.setFill(Color.grayRgb(20));
+		gc.setTextAlign(TextAlignment.CENTER);
+	
+		gc.setFill(Color.WHITE);
+		gc.fillText("Score: " + getScore(), 60,  20);
 		
 		ship.paint();
 		//Condiciones por si el player sale de la pantalla
@@ -99,28 +116,32 @@ public class LevelOne extends BaseLevels {
 		}
 
 		collision();
+		if(enemyShip1.isEmpty()) {
+			MainWindow.LEVELS = 3;
+		}
 	}
 	
 	
 
-	public void collision() {
+	public void collision() throws IOException {
 		boolean flag=false;
 		// Calcular distancia
 		for (int i = 0; i < bullets.size(); i++) {
 			for (int j = 0; j < enemyShip1.size(); j++) {
-
+				
 				// Comparar
 				EnemyShip enemy = enemyShip1.get(j);
 				Bullet p = bullets.get(i);
 				//Distance euclidea
 				double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
-
 				if (D <= 40) {
 					EnemyShip deletedEnemy = enemyShip1.remove(j);
 					deletedEnemy.setAlive(false);
 					bullets.remove(i);
 					explosion(deletedEnemy);
 					frameExplo=0;
+					setScore(getScore() + 10);
+					
 					return;
 				}
 
@@ -186,6 +207,14 @@ public class LevelOne extends BaseLevels {
 			}
 			bullets.add(new Bullet(canvas, ship.getX(), ship.getY(),textureBullet));
 		}
+	}
+
+	public static int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 }

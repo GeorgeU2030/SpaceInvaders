@@ -2,6 +2,7 @@ package levels;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 public class LevelTwo extends BaseLevels{
 
@@ -12,7 +13,8 @@ public class LevelTwo extends BaseLevels{
 
 	@Override
 	public void paint() {
-		// TODO Auto-generated method stub
+		
+		
 		
 	}
 

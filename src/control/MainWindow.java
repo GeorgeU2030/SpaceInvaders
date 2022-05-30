@@ -13,13 +13,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import levels.BaseLevels;
 import levels.FinalScore;
 import levels.LevelOne;
 import levels.LevelThree;
 import levels.LevelTwo;
 import model.Bullet;
-import model.EnemyShip;
+
+
+
+import model.Player;
+
 import model.Ship;
 
 public class MainWindow implements Initializable {
@@ -27,9 +32,12 @@ public class MainWindow implements Initializable {
 	private ArrayList<Bullet> bullets;
 
 	private Ship ship;
+
 	@FXML
 	private Canvas canvas;
 
+	
+   
 	private GraphicsContext gc;
 	// Niveles
 	private ArrayList<BaseLevels> levels;
@@ -44,13 +52,17 @@ public class MainWindow implements Initializable {
 		LEVELS = lEVELS;
 	}
 
-	public static long FRAMES = 0;
 
+    public static long FRAMES = 0;
+  	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// Levels
-		levels = new ArrayList<>();
+		
+	
+		//Levels
+		 levels= new ArrayList<>();
+		
 
 		try {
 			levels.add(new LevelOne(canvas));
@@ -110,10 +122,7 @@ public class MainWindow implements Initializable {
 
 	}
 
-	public void eventsEnemyesIs0() {
-
-	}
-
+	
 	public void update() {
 
 	}

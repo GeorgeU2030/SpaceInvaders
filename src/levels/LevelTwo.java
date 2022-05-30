@@ -64,7 +64,9 @@ public class LevelTwo extends BaseLevels {
 				Image textureEnemy = new Image(new FileInputStream(file));
 				contx += 100;
 				// conty-=100;
-				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy);
+				double speedY=11;
+				double speedX=0;
+				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy,speedY,speedX);
 				enemyShip1.add(enemy);
 				// shotsAgainst(enemy);
 				enemy.start();

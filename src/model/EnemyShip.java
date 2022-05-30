@@ -17,6 +17,8 @@ public class EnemyShip extends Thread{
 	private int countBullet=0;
 	private double x;
 	private double y;
+	private double speedY;
+	private double speedX;
 	//private final int NUMBERENEMYSONE=10;
 	private Image texture;
 	
@@ -25,13 +27,15 @@ public class EnemyShip extends Thread{
 	private boolean isAlive = true; //Variable para saber si el enemigo sigue vivo o no.
 
 
-	public EnemyShip(Canvas canvas, double x, double y, Image texture) {
+	public EnemyShip(Canvas canvas, double x, double y, Image texture, double speedY,double speedX) {
 		bulletsEnemyes= new ArrayList<Bullet>();
 		this.canvas=canvas;
 		gc=canvas.getGraphicsContext2D();
 		this.x=x;
 		this.y=y;
 		this.texture= texture;
+		this.speedY=speedY;
+		this.speedX=speedX;
 		
 	}
 	//Hilo
@@ -40,10 +44,9 @@ public class EnemyShip extends Thread{
 		
 		
 		while(isAlive) {
-			int randX = 0;
-			int randY = 8 ;
-			x+=randX;
-			y+=randY;
+			
+			x+=speedX;
+			y+=speedY;
 			
 			
 			try {

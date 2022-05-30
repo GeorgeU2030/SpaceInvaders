@@ -11,20 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import levels.BaseLevels;
 import levels.FinalScore;
 import levels.LevelOne;
 import levels.LevelThree;
 import levels.LevelTwo;
 import model.Bullet;
-
-
-
-import model.Player;
-
 import model.Ship;
 
 public class MainWindow implements Initializable {

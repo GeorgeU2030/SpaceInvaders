@@ -21,7 +21,7 @@ public class Bullet {
 	private int size;
 	private int speed;
 	
-	public Bullet(Canvas canvas,double x, double y, Image textureBullet) {
+	public Bullet(Canvas canvas,double x, double y, Image textureBullet, int speed) {
 		this.canvas=canvas;
 		this.gc = canvas.getGraphicsContext2D();
 		
@@ -29,7 +29,7 @@ public class Bullet {
 		this.y=y-20;
 		
 		this.size=0;
-		this.speed=8;
+		this.speed=speed;
 		this.textureBullet= textureBullet;
 	}
 	

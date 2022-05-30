@@ -7,22 +7,26 @@ import java.io.FileNotFoundException;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import model.Bullet;
+import java.util.ArrayList;
 
 public class EnemyShip extends Thread{
 	//Graphics
 	private Canvas canvas;
 	private GraphicsContext gc;
-	
+	private int countBullet=0;
 	private double x;
 	private double y;
-	private final int NUMBERENEMYSONE=10;
+	//private final int NUMBERENEMYSONE=10;
 	private Image texture;
+	
+	private ArrayList<Bullet> bulletsEnemyes;
 	
 	private boolean isAlive = true; //Variable para saber si el enemigo sigue vivo o no.
 
 
 	public EnemyShip(Canvas canvas, double x, double y, Image texture) {
-	
+		bulletsEnemyes= new ArrayList<Bullet>();
 		this.canvas=canvas;
 		gc=canvas.getGraphicsContext2D();
 		this.x=x;
@@ -33,11 +37,15 @@ public class EnemyShip extends Thread{
 	//Hilo
 	@Override
 	public void run() {
+		
+		
 		while(isAlive) {
 			int randX = 0;
 			int randY = 8 ;
 			x+=randX;
 			y+=randY;
+			
+			
 			try {
 				Thread.sleep(150);
 			} catch (InterruptedException e) {

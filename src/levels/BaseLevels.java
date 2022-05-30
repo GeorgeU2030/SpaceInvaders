@@ -21,4 +21,6 @@ public abstract class BaseLevels {
 	
 
 	public abstract void onKey(KeyEvent e);
+
+
 }

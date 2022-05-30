@@ -12,6 +12,8 @@ public class Ship {
 
 	private Canvas canvas;
 	private GraphicsContext gc;
+	
+	private boolean isAlive=true;
 
 	double x, y;
 
@@ -22,6 +24,17 @@ public class Ship {
 		this.y = y;
 
 	}
+	
+	public boolean getAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+
+	
+
 
 	public void paint() {
 		File file = new File("image/playerShip3_red.png");

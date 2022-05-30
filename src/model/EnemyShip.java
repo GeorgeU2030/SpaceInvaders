@@ -22,6 +22,8 @@ public class EnemyShip extends Thread{
 	//private final int NUMBERENEMYSONE=10;
 	private Image texture;
 	
+
+	
 	private ArrayList<Bullet> bulletsEnemyes;
 	
 	private boolean isAlive = true; //Variable para saber si el enemigo sigue vivo o no.
@@ -49,6 +51,7 @@ public class EnemyShip extends Thread{
 			y+=speedY;
 			
 			
+			
 			try {
 				Thread.sleep(150);
 			} catch (InterruptedException e) {
@@ -64,9 +67,14 @@ public class EnemyShip extends Thread{
 		
 			gc.drawImage(texture, x, y,50,50);
 		
-		
+			
+			
 	}
 
+	
+	
+	
+		
 	
 	public void move() {
 		// TODO Auto-generated method stub

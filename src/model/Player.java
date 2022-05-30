@@ -2,12 +2,12 @@ package model;
 
 public class Player {
 	public String username;
-	public int score;
+	public int score=0;
 	public long totalScore;
 	public Player(String username, int score, long totalScore) {
 		super();
 		this.username = username;
-		this.score = score;
+		this.score +=score;
 		this.totalScore = totalScore;
 	}
 	public String getUserName() {

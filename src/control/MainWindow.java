@@ -19,7 +19,7 @@ import levels.LevelTwo;
 import model.Bullet;
 import model.Ship;
 
-public class MainWindow implements Initializable {
+public class MainWindow  implements Initializable,Runnable {
 
 	private ArrayList<Bullet> bullets;
 
@@ -27,9 +27,21 @@ public class MainWindow implements Initializable {
 
 	@FXML
 	private Canvas canvas;
+	private boolean hilo=false;;
+	private Thread thread;
+	
 
 	
    
+	public boolean isHilo() {
+		return hilo;
+	}
+
+	public void setHilo(boolean hilo) {
+		this.hilo = hilo;
+	}
+
+
 	private GraphicsContext gc;
 	// Niveles
 	private ArrayList<BaseLevels> levels;
@@ -68,23 +80,49 @@ public class MainWindow implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		levels.add(new LevelThree(canvas));
+		try {
+			levels.add(new LevelThree(canvas));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		levels.add(new FinalScore(canvas));
 
 		gc = canvas.getGraphicsContext2D();
 		canvas.setFocusTraversable(true);
 
-		new Thread(() -> {
-			while (true) {
-				Platform.runLater(() -> {
-					paint();
-				});
-				pause(50);
-				FRAMES++;
-			}
-		}).start();
+		start();
 		// Eventos teclas
 		initEvents();
+	}
+	@Override
+	public void run() {
+		while (hilo) {
+			Platform.runLater(()->{
+				paint();
+			});
+			pause(50);
+			FRAMES++;
+		}
+		try {
+			stop();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void start() {
+		thread = new Thread(this);
+		thread.start();
+		hilo=true;
+	}
+	
+	
+	private void stop() throws InterruptedException {
+		thread.join();
+		setHilo(false);
 	}
 
 	private void pause(int time) {
@@ -118,5 +156,7 @@ public class MainWindow implements Initializable {
 	public void update() {
 
 	}
+
+	
 
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.Main;
 import model.Player;
@@ -32,6 +33,7 @@ public class LoginWindow {
 		stage.setScene(scene);
 		
 		stage.setTitle("GALAGA");
+		stage.getIcons().add(new Image("/image/playerShip3_red.png"));
 		stage.setResizable(false);
 		stage.show();
 		

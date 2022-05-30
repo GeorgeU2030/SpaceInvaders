@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import main.Main;
 import model.Bullet;
 import model.EnemyShip;
+import model.Player;
 import model.Ship;
 
 public class LevelOne extends BaseLevels {
@@ -40,6 +41,7 @@ public class LevelOne extends BaseLevels {
 
 	private Ship ship;
 	private static int score;
+	private Player player;
 
 	private MainWindow main;
 
@@ -77,9 +79,10 @@ public class LevelOne extends BaseLevels {
 				Image textureEnemy = new Image(new FileInputStream(file));
 				contx += 100;
 				// conty-=100;
-				double speedY=8;
-				double speedX=0;
-				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy,speedY,speedX);
+				double speedY = 8;
+				double speedX = 0;
+				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy, speedY,
+						speedX);
 				enemyShip1.add(enemy);
 				// shotsAgainst(enemy);
 				enemy.start();
@@ -96,6 +99,7 @@ public class LevelOne extends BaseLevels {
 
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
 
 		gc.setFill(Color.grayRgb(20));
 		gc.setTextAlign(TextAlignment.CENTER);
@@ -107,7 +111,7 @@ public class LevelOne extends BaseLevels {
 			ship.paint();
 			// Condiciones por si el player sale de la pantalla
 			if (ship.getX() > canvas.getWidth()) {
-				ship.setX(canvas.getWidth()-50);
+				ship.setX(canvas.getWidth() - 50);
 			}
 			if (ship.getX() < 0) {
 				ship.setX(0);
@@ -121,41 +125,58 @@ public class LevelOne extends BaseLevels {
 					i--;
 				}
 			}
-			
+
 		}
 
 		paintEnemyesOneAndTwo();
 
 		// Colision balas vs enemigo
+		try {
+			if (bullets.isEmpty()) {
+				return;
+			} else {
+				collision();
+			}
 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Colision enemigo vs player
 		new Thread(() -> {
 			while (ship.getAlive() == true) {
-				try {
-					collision();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (enemyShip1.isEmpty()) {
+					return;
+				} else {
+					collisionPlayer();
 				}
-				collisionPlayer();
 				pause(10);
 
 			}
 
-			gc.setFill(Color.grayRgb(20));
-			gc.setTextAlign(TextAlignment.CENTER);
+			if (ship.getAlive() == false) {
+				gc.setFill(Color.grayRgb(20));
+				gc.setTextAlign(TextAlignment.CENTER);
 
-			gc.setFill(Color.WHITE);
-			gc.fillText("GAME OVER", 500, canvas.getHeight() - 400);
+				gc.setFill(Color.WHITE);
+				gc.fillText("GAME OVER", 500, canvas.getHeight() - 400);
 
-			enemyShip1.removeAll(enemyShip1);
-			bullets.removeAll(bullets);
+				enemyShip1.removeAll(enemyShip1);
+
+				bullets.removeAll(bullets);
+				
+			}
 		}).start();
+		
+		if(ship.getAlive()==false) {
+			main.setHilo(false);
+		}
 
 		if (condicionEnemigosVivos() == true && ship.getAlive() == true) {
 			paintNextLevel();
 
 		}
+		
 
 	}
 
@@ -169,31 +190,32 @@ public class LevelOne extends BaseLevels {
 	}
 
 	public void collision() throws IOException {
-		if (ship.getAlive() == true) {
 
-			// Calcular distancia
-			for (int i = 0; i < bullets.size(); i++) {
-				for (int j = 0; j < enemyShip1.size(); j++) {
+		// Calcular distancia
 
-					// Comparar
-					EnemyShip enemy = enemyShip1.get(j);
-					Bullet p = bullets.get(i);
-					// Distance euclidea
-					double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
-					if (D <= 30) {
-						EnemyShip deletedEnemy = enemyShip1.remove(j);
-						deletedEnemy.setAlive(false);
-						bullets.remove(i);
-						explosion(deletedEnemy);
-						frameExplo = 0;
-						setScore(getScore() + 10);
+		for (int i = 0; i < bullets.size(); i++) {
+			for (int j = 0; j < enemyShip1.size(); j++) {
 
-						return;
-					}
+				// Comparar
+				EnemyShip enemy = enemyShip1.get(j);
+				Bullet p = bullets.get(i);
+				// Distance euclidea
+				double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
+				if (D <= 40) {
+					EnemyShip deletedEnemy = enemyShip1.remove(j);
+					deletedEnemy.setAlive(false);
+					bullets.remove(i);
+					System.out.println("eliminada la nave #" + (j + 1) + "con la bala #" + (i + 1));
+					// i--;
+					explosion(deletedEnemy);
+					frameExplo = 0;
+					setScore(getScore() + 10);
 
-					System.out.println("Distancia: " + "  enemigo #" + j + " bala # " + i + "  " + D);
-
+					return;
 				}
+
+				System.out.println("Distancia: " + "  enemigo #" + (j + 1) + " bala # " + (i + 1) + "  " + D);
+
 			}
 		}
 	}
@@ -207,25 +229,25 @@ public class LevelOne extends BaseLevels {
 	}
 
 	public void collisionPlayer() {
-		if (ship.getAlive() == true) {
-			for (int i = 0; i < enemyShip1.size(); i++) {
-				if (enemyShip1.get(i).getAlive() == true) {
-					EnemyShip enemy = enemyShip1.get(i);
-					Ship shipd = ship;
-					double D = Math
-							.sqrt(Math.pow(shipd.getX() - enemy.getX(), 2) + Math.pow(shipd.getY() - enemy.getY(), 2));
-					if (D <= 40) {
-						EnemyShip deletedEnemy = enemyShip1.remove(i);
 
-						explosion(shipd);
-						frameExplo = 0;
-						shipd.setAlive(false);
-						deletedEnemy.setAlive(false);
-						System.out.println("PERDISTE");
-					}
-					System.out.println("Distancia: " + "  enemigo #" + shipd + " enemigo # " + i + "  " + D);
+		for (int i = 0; i < enemyShip1.size(); i++) {
+			if (enemyShip1.get(i).getAlive() == true) {
+				EnemyShip enemy = enemyShip1.get(i);
+				Ship shipd = ship;
+				double D = Math
+						.sqrt(Math.pow(shipd.getX() - enemy.getX(), 2) + Math.pow(shipd.getY() - enemy.getY(), 2));
+				if (D <= 40) {
+					EnemyShip deletedEnemy = enemyShip1.remove(i);
 
+					explosion(shipd);
+					frameExplo = 0;
+					shipd.setAlive(false);
+					deletedEnemy.setAlive(false);
+					System.out.println("PERDISTE");
 				}
+				// System.out.println("Distancia: " + " enemigo #" + shipd + " enemigo # " + i +
+				// " " + D);
+
 			}
 		}
 	}
@@ -280,11 +302,8 @@ public class LevelOne extends BaseLevels {
 	public void paintNextLevel() {
 
 		gc.setFill(Color.WHITE);
-		gc.fillText("Press enter to continue to the next level ", 500,
-				canvas.getHeight() - 400);
+		gc.fillText("Press enter to continue to the next level ", 500, canvas.getHeight() - 400);
 	}
-
-	
 
 	@Override
 	public void onKey(KeyEvent e) {
@@ -308,12 +327,12 @@ public class LevelOne extends BaseLevels {
 				}
 				bullets.add(new Bullet(canvas, ship.getX(), ship.getY(), textureBullet, 8));
 			}
-			if(e.getCode().equals(KeyCode.ENTER)) {
-			if (condicionEnemigosVivos() == true) {
+			if (e.getCode().equals(KeyCode.ENTER)) {
+				if (condicionEnemigosVivos() == true) {
 
-				MainWindow.LEVELS = (MainWindow.LEVELS + 1);
+					MainWindow.LEVELS = (MainWindow.LEVELS + 1);
 
-			}
+				}
 			}
 		}
 	}

@@ -16,11 +16,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import model.Bullet;
 import model.EnemyShip;
+import model.Player;
 import model.Ship;
 
 public class LevelTwo extends BaseLevels {
 
-	private final static int NUM_ENEMY = 10;
+	private final static int NUM_ENEMY = 16;
 	private ArrayList<Bullet> bullets;
 	// private ArrayList<Bullet> enemyBullets;
 	private ArrayList<EnemyShip> enemyShip1;
@@ -28,8 +29,9 @@ public class LevelTwo extends BaseLevels {
 	private int frameExplo = 0;
 
 	private Ship ship;
+	private Player player;
 	private static int score;
-
+	
 	private MainWindow main;
 
 	public LevelTwo(Canvas canvas) throws FileNotFoundException {
@@ -47,26 +49,27 @@ public class LevelTwo extends BaseLevels {
 	}
 
 	public void initializingEnemyes() throws FileNotFoundException {
-		int contx = 200;
-		int conty = 1000;
+		int contx = 100;
+		int conty = 1500;
 		;
 		int i = 1;
 		try {
 			for (int j = 0; j < NUM_ENEMY; j++) {
-				if (j == 5) {
+				if (j == 8) {
 					i = 1;
 					// conty=700;
 					conty -= 100;
-					contx = 200;
+					contx = 100;
 				}
 				File file = new File("image/enemy" + i + ".png");
 				i++;
 				Image textureEnemy = new Image(new FileInputStream(file));
 				contx += 100;
 				// conty-=100;
-				double speedY=11;
-				double speedX=0;
-				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy,speedY,speedX);
+				double speedY = 9.5;
+				double speedX = 0;
+				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy, speedY,
+						speedX);
 				enemyShip1.add(enemy);
 				// shotsAgainst(enemy);
 				enemy.start();
@@ -93,9 +96,11 @@ public class LevelTwo extends BaseLevels {
 		if (ship.getAlive() == true) {
 			ship.paint();
 			// Condiciones por si el player sale de la pantalla
+			// derecho
 			if (ship.getX() > canvas.getWidth()) {
-				ship.setX(canvas.getWidth()-50);
+				ship.setX(canvas.getWidth() - 50);
 			}
+			// izquierdo
 			if (ship.getX() < 0) {
 				ship.setX(0);
 			}
@@ -108,36 +113,52 @@ public class LevelTwo extends BaseLevels {
 					i--;
 				}
 			}
-			
+
 		}
 
 		paintEnemyesOneAndTwo();
+		try {
 
-		// Colision balas vs enemigo
+			// Colision balas vs enemigo
+			if (bullets.isEmpty()) {
+				return;
+			} else {
+				collision();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		// Colision enemigo vs player
 		new Thread(() -> {
 			while (ship.getAlive() == true) {
-				try {
-					collision();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+				// Colision enemigo vs player
+				if (enemyShip1.isEmpty()) {
+					return;
+				} else {
+					collisionPlayer();
 				}
-				collisionPlayer();
+
 				pause(10);
 
 			}
 
-			gc.setFill(Color.grayRgb(20));
-			gc.setTextAlign(TextAlignment.CENTER);
+			if (ship.getAlive() == false) {
+				gc.setFill(Color.grayRgb(20));
+				gc.setTextAlign(TextAlignment.CENTER);
 
-			gc.setFill(Color.WHITE);
-			gc.fillText("GAME OVER", 500, canvas.getHeight() - 400);
+				gc.setFill(Color.WHITE);
+				gc.fillText("GAME OVER", 500, canvas.getHeight() - 400);
 
-			enemyShip1.removeAll(enemyShip1);
-			bullets.removeAll(bullets);
+				enemyShip1.removeAll(enemyShip1);
+				bullets.removeAll(bullets);
+			}
 		}).start();
+
+		if (ship.getAlive() == false) {
+			main.setHilo(false);
+		}
 
 		if (condicionEnemigosVivos() == true && ship.getAlive() == true) {
 			paintNextLevel();
@@ -171,6 +192,8 @@ public class LevelTwo extends BaseLevels {
 						EnemyShip deletedEnemy = enemyShip1.remove(j);
 						deletedEnemy.setAlive(false);
 						bullets.remove(i);
+						System.out.println("eliminada la nave #" + (j + 1) + "con la bala #" + (i + 1));
+						// i--;
 						explosion(deletedEnemy);
 						frameExplo = 0;
 						setScore(getScore() + 10);
@@ -178,7 +201,8 @@ public class LevelTwo extends BaseLevels {
 						return;
 					}
 
-					System.out.println("Distancia: " + "  enemigo #" + j + " bala # " + i + "  " + D);
+					// System.out.println("Distancia: " + " enemigo #" + j + " bala # " + i + " " +
+					// D);
 
 				}
 			}
@@ -203,14 +227,14 @@ public class LevelTwo extends BaseLevels {
 							.sqrt(Math.pow(shipd.getX() - enemy.getX(), 2) + Math.pow(shipd.getY() - enemy.getY(), 2));
 					if (D <= 40) {
 						EnemyShip deletedEnemy = enemyShip1.remove(i);
-
 						explosion(shipd);
 						frameExplo = 0;
 						shipd.setAlive(false);
 						deletedEnemy.setAlive(false);
 						System.out.println("PERDISTE");
 					}
-					System.out.println("Distancia: " + "  enemigo #" + shipd + " enemigo # " + i + "  " + D);
+					// System.out.println("Distancia: " + " enemigo #" + shipd + " enemigo # " + i +
+					// " " + D);
 
 				}
 			}
@@ -267,11 +291,8 @@ public class LevelTwo extends BaseLevels {
 	public void paintNextLevel() {
 
 		gc.setFill(Color.WHITE);
-		gc.fillText("Press enter to continue to the next level ", 500,
-				canvas.getHeight() - 400);
+		gc.fillText("Press enter to continue to the next level ", 500, canvas.getHeight() - 400);
 	}
-
-	
 
 	@Override
 	public void onKey(KeyEvent e) {
@@ -295,12 +316,12 @@ public class LevelTwo extends BaseLevels {
 				}
 				bullets.add(new Bullet(canvas, ship.getX(), ship.getY(), textureBullet, 8));
 			}
-			if(e.getCode().equals(KeyCode.ENTER)) {
-			if (condicionEnemigosVivos() == true) {
+			if (e.getCode().equals(KeyCode.ENTER)) {
+				if (condicionEnemigosVivos() == true) {
 
-				MainWindow.LEVELS = (MainWindow.LEVELS + 1);
+					MainWindow.LEVELS = (MainWindow.LEVELS + 1);
 
-			}
+				}
 			}
 		}
 	}

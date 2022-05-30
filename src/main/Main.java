@@ -1,5 +1,6 @@
 package main;
 
+import control.LoginWindow;
 import control.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +19,10 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage arg0) throws Exception {
-		FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/MainWindow.fxml"));
-		loader.setController(new MainWindow());
+		FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/Login.fxml"));
+		loader.setController(new LoginWindow());
 		Parent parent = loader.load();
+		parent.setStyle("-fx-background-image: url('https://fondosmil.com/fondo/53645.jpg'); ");
 		Scene scene = new Scene(parent);
 		Stage stage = new Stage();
 		stage.setScene(scene);
@@ -29,7 +31,7 @@ public class Main extends Application{
 		stage.setResizable(false);
 		stage.show();
 		
-		
 	}
+	/**/
 
 }

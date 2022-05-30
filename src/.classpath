@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="C:/Users/PC/OneDrive - Universidad Icesi (@icesi.edu.co)/Escritorio/GIT/SpaceInvaders/src/lib/gson-2.9.0.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

@@ -1,14 +1,10 @@
 package model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import model.Bullet;
-import java.util.ArrayList;
 
 public class EnemyShip extends Thread{
 	//Graphics
@@ -20,6 +16,7 @@ public class EnemyShip extends Thread{
 	private double speedY;
 	private double speedX;
 	//private final int NUMBERENEMYSONE=10;
+
 	private Image texture;
 	
 
@@ -30,8 +27,8 @@ public class EnemyShip extends Thread{
 
 
 	public EnemyShip(Canvas canvas, double x, double y, Image texture, double speedY,double speedX) {
-		bulletsEnemyes= new ArrayList<Bullet>();
-		this.canvas=canvas;
+		setBulletsEnemyes(new ArrayList<Bullet>());
+		this.setCanvas(canvas);
 		gc=canvas.getGraphicsContext2D();
 		this.x=x;
 		this.y=y;
@@ -107,6 +104,24 @@ public class EnemyShip extends Thread{
 	}
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
+	}
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
+	}
+	public int getCountBullet() {
+		return countBullet;
+	}
+	public void setCountBullet(int countBullet) {
+		this.countBullet = countBullet;
+	}
+	public ArrayList<Bullet> getBulletsEnemyes() {
+		return bulletsEnemyes;
+	}
+	public void setBulletsEnemyes(ArrayList<Bullet> bulletsEnemyes) {
+		this.bulletsEnemyes = bulletsEnemyes;
 	}
 
 	

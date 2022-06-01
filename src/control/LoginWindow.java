@@ -16,17 +16,26 @@ import model.Player;
 public class LoginWindow {
 	
 	public Player player;
+	
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	@FXML
 	private TextField inputName;
 	
 	@FXML
 	void playBTN(ActionEvent event) throws IOException {
-		player=new Player(inputName.getText(),0,0);
+		player=new Player(inputName.getText(),0);
 		Stage stageClose = (Stage) inputName.getScene().getWindow();
     	stageClose.close();
 		
 		FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/MainWindow.fxml"));
-		loader.setController(new MainWindow());
+		loader.setController(new MainWindow(player));
 		Parent parent = loader.load();
 		Scene scene = new Scene(parent);
 		Stage stage = new Stage();
@@ -36,7 +45,6 @@ public class LoginWindow {
 		stage.getIcons().add(new Image("/image/playerShip3_red.png"));
 		stage.setResizable(false);
 		stage.show();
-		
 		
 	}
 }

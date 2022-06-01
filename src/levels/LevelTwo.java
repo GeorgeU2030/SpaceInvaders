@@ -11,7 +11,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import model.Bullet;
@@ -22,20 +21,21 @@ import model.Ship;
 public class LevelTwo extends BaseLevels {
 
 	private final static int NUM_ENEMY = 16;
+	private final static double SPEED_LEVEL = 9.2;
 	private ArrayList<Bullet> bullets;
-	// private ArrayList<Bullet> enemyBullets;
 	private ArrayList<EnemyShip> enemyShip1;
 	private ArrayList<Image> exploImages;
 	private int frameExplo = 0;
 
 	private Ship ship;
-	private Player player;
+	private static Player player;
 	private static int score;
 	
-	private MainWindow main;
 
-	public LevelTwo(Canvas canvas) throws FileNotFoundException {
-		super(canvas);
+	public LevelTwo(Canvas canvas, Player player) throws FileNotFoundException {
+		super(canvas, player);
+		this.setPlayer(player);
+		System.out.println(player.totalScore);
 		ship = new Ship(canvas, 500, canvas.getHeight() - 100);
 
 		// Balas
@@ -43,14 +43,14 @@ public class LevelTwo extends BaseLevels {
 		// enemyBullets = new ArrayList<Bullet>();
 		enemyShip1 = new ArrayList<EnemyShip>();
 		exploImages = new ArrayList<>();
-		setScore(LevelOne.getScore());
+		setScore(player.totalScore);
 
 		initializingEnemyes();
 	}
 
 	public void initializingEnemyes() throws FileNotFoundException {
 		int contx = 100;
-		int conty = 1500;
+		int conty = 1800;
 		;
 		int i = 1;
 		try {
@@ -66,7 +66,7 @@ public class LevelTwo extends BaseLevels {
 				Image textureEnemy = new Image(new FileInputStream(file));
 				contx += 100;
 				// conty-=100;
-				double speedY = 9.5;
+				double speedY = SPEED_LEVEL;
 				double speedX = 0;
 				EnemyShip enemy = new EnemyShip(canvas, contx, canvas.getHeight() - conty, textureEnemy, speedY,
 						speedX);
@@ -91,7 +91,7 @@ public class LevelTwo extends BaseLevels {
 		gc.setTextAlign(TextAlignment.CENTER);
 
 		gc.setFill(Color.WHITE);
-		gc.fillText("Score: " + getScore(), 60, 20);
+		gc.fillText("Level: 2  "+"Player: "+player.username+"  Score: " + getScore(), 130, 20);
 
 		if (ship.getAlive() == true) {
 			ship.paint();
@@ -120,9 +120,7 @@ public class LevelTwo extends BaseLevels {
 		try {
 
 			// Colision balas vs enemigo
-			if (bullets.isEmpty()) {
-				return;
-			} else {
+			if (bullets.isEmpty()==false) {
 				collision();
 			}
 		} catch (IOException e) {
@@ -144,21 +142,19 @@ public class LevelTwo extends BaseLevels {
 
 			}
 
-			if (ship.getAlive() == false) {
-				gc.setFill(Color.grayRgb(20));
-				gc.setTextAlign(TextAlignment.CENTER);
+			gc.setFill(Color.grayRgb(20));
+			gc.setTextAlign(TextAlignment.CENTER);
 
-				gc.setFill(Color.WHITE);
-				gc.fillText("GAME OVER", 500, canvas.getHeight() - 400);
+			gc.setFill(Color.WHITE);
+			gc.fillText("GAME OVER \nsorry "+player.username+" you are a loser "+player.username, 500, canvas.getHeight() - 400);
+			
+			gc.setFill(Color.WHITE);
+			gc.fillText("YOUR FINAL SCORE IS:"+score+"  ", 500, canvas.getHeight() - 300);
 
-				enemyShip1.removeAll(enemyShip1);
-				bullets.removeAll(bullets);
-			}
+			enemyShip1.removeAll(enemyShip1);
+			bullets.removeAll(bullets);
+			
 		}).start();
-
-		if (ship.getAlive() == false) {
-			main.setHilo(false);
-		}
 
 		if (condicionEnemigosVivos() == true && ship.getAlive() == true) {
 			paintNextLevel();
@@ -196,7 +192,7 @@ public class LevelTwo extends BaseLevels {
 						// i--;
 						explosion(deletedEnemy);
 						frameExplo = 0;
-						setScore(getScore() + 10);
+						setScore(getScore() + 20);
 
 						return;
 					}
@@ -220,12 +216,12 @@ public class LevelTwo extends BaseLevels {
 	public void collisionPlayer() {
 		if (ship.getAlive() == true) {
 			for (int i = 0; i < enemyShip1.size(); i++) {
-				if (enemyShip1.get(i).getAlive() == true) {
+				if (enemyShip1.get(i)!=null && enemyShip1.get(i).getAlive() == true) {
 					EnemyShip enemy = enemyShip1.get(i);
 					Ship shipd = ship;
 					double D = Math
 							.sqrt(Math.pow(shipd.getX() - enemy.getX(), 2) + Math.pow(shipd.getY() - enemy.getY(), 2));
-					if (D <= 40) {
+					if (D <= 40 || enemy.getY()==shipd.getY()) {
 						EnemyShip deletedEnemy = enemyShip1.remove(i);
 						explosion(shipd);
 						frameExplo = 0;
@@ -291,7 +287,8 @@ public class LevelTwo extends BaseLevels {
 	public void paintNextLevel() {
 
 		gc.setFill(Color.WHITE);
-		gc.fillText("Press enter to continue to the next level ", 500, canvas.getHeight() - 400);
+		gc.fillText("LEVEL 2 PASSED \n Current score: "+score,500, canvas.getHeight() - 400);
+		gc.fillText(">>>>>Press enter to continue to the next level<<<<<",500, canvas.getHeight() - 200);
 	}
 
 	@Override
@@ -331,7 +328,15 @@ public class LevelTwo extends BaseLevels {
 	}
 
 	public void setScore(int score) {
-		this.score = score;
+		LevelTwo.score = score;
+	}
+
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		LevelTwo.player = player;
 	}
 
 }

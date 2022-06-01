@@ -18,7 +18,7 @@ public class Ship {
 	double x, y;
 
 	public Ship(Canvas canvas, double x, double y) {
-		this.canvas = canvas;
+		this.setCanvas(canvas);
 		gc = canvas.getGraphicsContext2D();
 		this.x = x;
 		this.y = y;
@@ -77,6 +77,14 @@ public class Ship {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
 	}
 
 }

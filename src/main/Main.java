@@ -1,7 +1,6 @@
 package main;
 
 import control.LoginWindow;
-import control.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -5,14 +5,15 @@ import java.io.IOException;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import model.Player;
 
 public abstract class BaseLevels {
 
 	protected Canvas canvas;
 	protected GraphicsContext gc;
+	protected static Player player;
 	
-	public BaseLevels(Canvas canvas) {
+	public BaseLevels(Canvas canvas, Player player) {
 		this.canvas = canvas;
 		gc = canvas.getGraphicsContext2D();
 	}

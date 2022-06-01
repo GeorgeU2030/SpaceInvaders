@@ -2,21 +2,20 @@ package levels;
 
 
 import java.io.IOException;
-import levels.LevelOne;
-import javafx.scene.Scene;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
+import model.Player;
 
 public class FinalScore extends BaseLevels {
 
+	public Player player;
 	
-	public FinalScore(Canvas canvas) {
-		super(canvas);
+	public FinalScore(Canvas canvas,Player player) {
+		super(canvas, player);
+		this.player=player;
 	          
 		// TODO Auto-generated constructor stub
 	}
@@ -26,7 +25,7 @@ public class FinalScore extends BaseLevels {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFill( Color.WHITE );
-        gc.setFont( Font.font( "Candara",50));
+        gc.setFont( Font.font( "Bauhaus 93",50));
        // gc.fillText("Your score in this level is:"+, 250, 250 );
     }
 

@@ -17,22 +17,29 @@ import levels.LevelOne;
 import levels.LevelThree;
 import levels.LevelTwo;
 import model.Bullet;
+import model.Player;
 import model.Ship;
 
-public class MainWindow  implements Initializable,Runnable {
 
+public class MainWindow  implements Initializable,Runnable {
+	
+	public static LoginWindow lw;
+	private static Player player;
 	private ArrayList<Bullet> bullets;
 
 	private Ship ship;
+	public BaseLevels bl;
 
 	@FXML
 	private Canvas canvas;
 	private boolean hilo=false;;
 	private Thread thread;
 	
-
-	
    
+	public MainWindow(Player player) {
+		this.setPlayer(player);
+	}
+
 	public boolean isHilo() {
 		return hilo;
 	}
@@ -46,7 +53,6 @@ public class MainWindow  implements Initializable,Runnable {
 	// Niveles
 	private ArrayList<BaseLevels> levels;
 	public static int LEVELS = 0;
-	private LevelOne levelOnee;
 
 	public static int getLEVELS() {
 		return LEVELS;
@@ -62,34 +68,36 @@ public class MainWindow  implements Initializable,Runnable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-	
 		//Levels
 		 levels= new ArrayList<>();
+		 String name=getPlayer().username;
+		 
+		try {
+			levels.add(new LevelOne(canvas,getPlayer()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Player player1=new Player(name,100);
+			setPlayer(player1);
+			levels.add(new LevelTwo(canvas,getPlayer()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Player player2=new Player(name,420);
+			setPlayer(player2);
+			levels.add(new LevelThree(canvas,getPlayer()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		levels.add(new FinalScore(canvas,getPlayer()));
 
-		try {
-			levels.add(new LevelOne(canvas));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			levels.add(new LevelTwo(canvas));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			levels.add(new LevelThree(canvas));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		levels.add(new FinalScore(canvas));
-
-		gc = canvas.getGraphicsContext2D();
+		setGc(canvas.getGraphicsContext2D());
 		canvas.setFocusTraversable(true);
 
 		start();
@@ -155,6 +163,38 @@ public class MainWindow  implements Initializable,Runnable {
 	
 	public void update() {
 
+	}
+
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		MainWindow.player = player;
+	}
+
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
+	}
+
+	public void setBullets(ArrayList<Bullet> bullets) {
+		this.bullets = bullets;
+	}
+
+	public Ship getShip() {
+		return ship;
+	}
+
+	public void setShip(Ship ship) {
+		this.ship = ship;
+	}
+
+	public GraphicsContext getGc() {
+		return gc;
+	}
+
+	public void setGc(GraphicsContext gc) {
+		this.gc = gc;
 	}
 
 	

@@ -1,13 +1,8 @@
 package model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 
 public class Bullet {
@@ -22,7 +17,7 @@ public class Bullet {
 	private int speed;
 	
 	public Bullet(Canvas canvas,double x, double y, Image textureBullet, int speed) {
-		this.canvas=canvas;
+		this.setCanvas(canvas);
 		this.gc = canvas.getGraphicsContext2D();
 		
 		this.x=x+20;
@@ -72,6 +67,18 @@ public class Bullet {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+
+
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
 	}
 
 	

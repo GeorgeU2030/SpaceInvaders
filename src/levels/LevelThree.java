@@ -190,7 +190,7 @@ public class LevelThree extends BaseLevels{
 						EnemyShip deletedEnemy = enemyShip1.remove(j);
 						deletedEnemy.setAlive(false);
 						bullets.remove(i);
-						System.out.println("eliminada la nave #"+(j+1)+"con la bala #"+(i+1));
+						//System.out.println("eliminada la nave #"+(j+1)+"con la bala #"+(i+1));
 						//i--;
 						explosion(deletedEnemy);
 						frameExplo = 0;
@@ -229,7 +229,7 @@ public class LevelThree extends BaseLevels{
 						frameExplo = 0;
 						shipd.setAlive(false);
 						deletedEnemy.setAlive(false);
-						System.out.println("PERDISTE");
+						//System.out.println("PERDISTE");
 					}
 				//	System.out.println("Distancia: " + "  enemigo #" + shipd + " enemigo # " + i + "  " + D);
 

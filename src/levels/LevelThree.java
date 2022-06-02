@@ -49,7 +49,7 @@ public class LevelThree extends BaseLevels{
 
 	public void initializingEnemyes() throws FileNotFoundException {
 		int contx = 100;
-		int conty = 3000;
+		int conty = 3500;
 		;
 		int i = 1;
 		try {
@@ -186,7 +186,7 @@ public class LevelThree extends BaseLevels{
 					Bullet p = bullets.get(i);
 					// Distance euclidea
 					double D = Math.sqrt(Math.pow(enemy.getX() - p.getX(), 2) + Math.pow(enemy.getY() - p.getY(), 2));
-					if (D <= 30) {
+					if (D <= 40) {
 						EnemyShip deletedEnemy = enemyShip1.remove(j);
 						deletedEnemy.setAlive(false);
 						bullets.remove(i);

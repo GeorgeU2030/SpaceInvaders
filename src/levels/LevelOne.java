@@ -119,9 +119,7 @@ public class LevelOne extends BaseLevels {
 
 		// Colision balas vs enemigo
 		try {
-			if (bullets.isEmpty()) {
-				
-			} else {
+			if (bullets.isEmpty()==false) {
 				collision();
 			}
 

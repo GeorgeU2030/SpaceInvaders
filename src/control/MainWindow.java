@@ -12,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import levels.BaseLevels;
-import levels.FinalScore;
 import levels.LevelOne;
 import levels.LevelThree;
 import levels.LevelTwo;
@@ -94,8 +93,6 @@ public class MainWindow  implements Initializable,Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		levels.add(new FinalScore(canvas,getPlayer()));
 
 		setGc(canvas.getGraphicsContext2D());
 		canvas.setFocusTraversable(true);

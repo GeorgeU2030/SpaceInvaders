@@ -35,7 +35,7 @@ public class LevelTwo extends BaseLevels {
 	public LevelTwo(Canvas canvas, Player player) throws FileNotFoundException {
 		super(canvas, player);
 		this.setPlayer(player);
-		System.out.println(player.totalScore);
+		//System.out.println(player.totalScore);
 		ship = new Ship(canvas, 500, canvas.getHeight() - 100);
 
 		// Balas
@@ -188,7 +188,7 @@ public class LevelTwo extends BaseLevels {
 						EnemyShip deletedEnemy = enemyShip1.remove(j);
 						deletedEnemy.setAlive(false);
 						bullets.remove(i);
-						System.out.println("eliminada la nave #" + (j + 1) + "con la bala #" + (i + 1));
+						//System.out.println("eliminada la nave #" + (j + 1) + "con la bala #" + (i + 1));
 						// i--;
 						explosion(deletedEnemy);
 						frameExplo = 0;
@@ -227,7 +227,7 @@ public class LevelTwo extends BaseLevels {
 						frameExplo = 0;
 						shipd.setAlive(false);
 						deletedEnemy.setAlive(false);
-						System.out.println("PERDISTE");
+						//System.out.println("PERDISTE");
 					}
 					// System.out.println("Distancia: " + " enemigo #" + shipd + " enemigo # " + i +
 					// " " + D);
